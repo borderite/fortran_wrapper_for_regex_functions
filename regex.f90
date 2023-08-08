@@ -94,7 +94,15 @@ contains
     type(regmatch_t), dimension(nmatch), intent(out) :: pmatch
     integer(kind=c_int), intent(in) :: cflags
     integer(kind=c_int) :: error_code
+    integer(kind=c_size_t) :: i
+    integer(kind=c_int) :: x
     error_code = c_regexec(preg, c_string(string), nmatch, pmatch, cflags)
+    do i = 1_c_size_t, nmatch
+       x = pmatch(i)%rm_so
+       if (x >= 0) pmatch(i)%rm_so = x + 1
+       x = pmatch(i)%rm_eo
+       if (x >= 0) pmatch(i)%rm_eo = x + 1
+    end do
   end function regexec
 end module posix_regex_wrapper
 
