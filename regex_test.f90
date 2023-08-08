@@ -46,7 +46,7 @@ program regex_test
   ! against REG_BADBR, REG_BADPAT, etc, which are again predefined in
   ! the module. You can find all values in the POSIX regex' manual.
   error_code = regcomp(preg, &
-       "^[A-Z][^.?!]*[.?!]$", &
+       "^\([A-Z]\)[^.?!]*\([.?!]\)$", &
        0)
   if (error_code == 0) then
      print *, "The regular expression was successfully compiled."
