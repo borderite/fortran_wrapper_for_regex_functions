@@ -100,8 +100,6 @@ contains
     do i = 1_c_size_t, nmatch
        x = pmatch(i)%rm_so
        if (x >= 0) pmatch(i)%rm_so = x + 1
-       x = pmatch(i)%rm_eo
-       if (x >= 0) pmatch(i)%rm_eo = x + 1
     end do
   end function regexec
 end module posix_regex_wrapper
