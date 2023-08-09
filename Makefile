@@ -7,7 +7,7 @@ COPTFLAGS =
 FOPTFLAGS =
 LDOPTIONS = 
 
-regex_test: regex_test.f90 regex.o regex_c.o
+regex_test: regex_test.f90 regex.o regex_c.o 
 	gfortran $(FCOPTIONS) $(OPTFLAGS) $(LDOPTIONS) $^ -o $@
 
 regex.o : regex.f90 regex_c.o

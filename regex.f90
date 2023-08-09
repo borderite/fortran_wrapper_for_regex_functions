@@ -49,10 +49,10 @@ module posix_regex_wrapper
        implicit none
        type(c_ptr), value, intent(in) :: preg
        character(len=1, kind=c_char), dimension(*), intent(in) :: pattern
-       integer(kind=c_int), intent(in) :: cflags
+       integer(kind=c_int), value, intent(in) :: cflags
        integer(kind=c_int) :: error_code
      end function c_regcomp
-     function c_regexec(preg, string, nmatch, pmatch, cflags) &
+     function c_regexec(preg, string, nmatch, pmatch, eflags) &
           result(error_code) bind(C, name = 'regexec')
        import :: c_ptr, c_char, c_int, c_size_t, regmatch_t
        implicit none
@@ -60,7 +60,7 @@ module posix_regex_wrapper
        character(len=1, kind=c_char), dimension(*), intent(in) :: string
        integer(kind=c_size_t), value, intent(in):: nmatch
        type(regmatch_t), dimension(nmatch), intent(out) :: pmatch
-       integer(kind=c_int), value, intent(in) :: cflags
+       integer(kind=c_int), value, intent(in) :: eflags
        integer(kind=c_int) :: error_code
      end function c_regexec
      function regerror(errcode, preg, errbuf, errbuf_size) result(msg_size) &
@@ -86,17 +86,17 @@ contains
     integer(kind=c_int) :: error_code
     error_code = c_regcomp(preg, c_string(pattern), cflags)
   end function regcomp
-  function regexec(preg, string, nmatch, pmatch, cflags) &
+  function regexec(preg, string, nmatch, pmatch, eflags) &
        result(error_code)
     type(c_ptr), value, intent(in) :: preg
     character(*), intent(in) :: string
     integer(kind=c_size_t), intent(in) :: nmatch
     type(regmatch_t), dimension(nmatch), intent(out) :: pmatch
-    integer(kind=c_int), intent(in) :: cflags
+    integer(kind=c_int), intent(in) :: eflags
     integer(kind=c_int) :: error_code
     integer(kind=c_size_t) :: i
     integer(kind=c_int) :: x
-    error_code = c_regexec(preg, c_string(string), nmatch, pmatch, cflags)
+    error_code = c_regexec(preg, c_string(string), nmatch, pmatch, eflags)
     do i = 1_c_size_t, nmatch
        x = pmatch(i)%rm_so
        if (x >= 0) pmatch(i)%rm_so = x + 1
