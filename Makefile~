@@ -1,5 +1,0 @@
-regex.o : regex.f90
-	gfortran -g -c -Wall $<
-
-regex_c.o : regex_c.c
-	gcc -g -c -Wall $<
